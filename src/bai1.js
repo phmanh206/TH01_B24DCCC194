@@ -1,19 +1,25 @@
-import React, {useState} from "react";
+import React from "react";
 
-function DisplayNumber({value}) {
-  return <h2>Giá trị hiện tại: {value}</h2>;
+function NumberViewer({ current }) {
+  return <p style={{ fontSize: 24 }}>Số hiện tại: {current}</p>;
 }
 
-function CounterApp() {
-  const [count, setCount] = useState(0);
+function SimpleCounter() {
+  const [number, updateNumber] = React.useState(0);
+
+  const increase = () => updateNumber(prev => prev + 1);
+  const decrease = () => updateNumber(prev => prev - 1);
 
   return (
-    <div style={{padding: 20}}>
-      <DisplayNumber value={count} />
-      <button onClick={() => setCount(count - 1)}>-</button>
-      <button onClick={() => setCount(count + 1)}>+</button>
-    </div>
+    <section style={{ padding: 30, textAlign: "center" }}>
+      <h1>👆 Bộ đếm số 👇</h1>
+      <NumberViewer current={number} />
+      <div style={{ marginTop: 10 }}>
+        <button onClick={decrease} style={{ marginRight: 10 }}>Giảm</button>
+        <button onClick={increase}>Tăng</button>
+      </div>
+    </section>
   );
 }
 
-export default CounterApp;
+export default SimpleCounter;

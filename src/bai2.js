@@ -1,34 +1,52 @@
-import React, {useState} from "react";
+import React, { useReducer } from "react";
 
-function TodoItem({text}) {
-  return <li>{text}</li>;
+
+function Task({ content }) {
+  return <li>{content}</li>;
 }
 
-function TodoApp() {
-  const [task, setTask] = useState("");
-  const [list, setList] = useState([]);
+function taskReducer(state, action) {
+  switch (action.type) {
+    case "ADD_TASK":
+      if (!action.payload.trim()) return state;
+      return [...state, { id: Date.now(), content: action.payload }];
+    default:
+      return state;
+  }
+}
 
-  const addTask = () => {
-    if (task.trim() === "") return;
-    setList([...list, task]);
-    setTask("");
+function TaskManager() {
+  const [input, setInput] = React.useState("");
+  const [tasks, dispatch] = useReducer(taskReducer, []);
+
+  const handleAdd = () => {
+    dispatch({ type: "ADD_TASK", payload: input });
+    setInput("");
+  };
+
+  const handleKey = (e) => {
+    if (e.key === "Enter") handleAdd();
   };
 
   return (
-    <div style={{padding: 20}}>
-      <input
-        value={task}
-        onChange={(e) => setTask(e.target.value)}
-        placeholder="Nhập công việc"
-      />
-      <button onClick={addTask}>Thêm</button>
+    <div style={{ margin: 30 }}>
+      <h2>Việc cần làm</h2>
+      <div style={{ marginBottom: 10 }}>
+        <input
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          onKeyDown={handleKey}
+          placeholder="Nhập việc cần làm..."
+        />
+        <button onClick={handleAdd}>Thêm</button>
+      </div>
       <ul>
-        {list.map((item, index) => (
-          <TodoItem key={index} text={item} />
+        {tasks.map((task) => (
+          <Task key={task.id} content={task.content} />
         ))}
       </ul>
     </div>
   );
 }
 
-export default TodoApp;
+export default TaskManager;
