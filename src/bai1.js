@@ -21,5 +21,4 @@ function SimpleCounter() {
     </section>
   );
 }
-
 export default SimpleCounter;

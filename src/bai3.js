@@ -28,5 +28,4 @@ function ColorApp() {
     </div>
   );
 }
-
 export default ColorApp;
